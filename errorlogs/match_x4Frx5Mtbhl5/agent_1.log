@@ -1,0 +1,11 @@
+=== Agent Install Log ===
+=== Agent Compile Log ===
+=== Agent Error Log ===
+Traceback (most recent call last):
+  File "main.py", line 3, in <module>
+    from agent import agent
+  File "C:\Users\msawtell\Documents\Kaggle Competitions\LuxAI\testAgent\agent.py", line 275
+    if unit.pos==closest_city_tile.pos: #Since you can transfer resource when you're one tile away, you don't need to move directly onto the cityTile. However, moving onto the tile saves units from dying to Nighttime.
+                                      ^
+SyntaxError: invalid syntax
+Agent timed out

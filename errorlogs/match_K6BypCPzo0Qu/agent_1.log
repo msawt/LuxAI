@@ -1,0 +1,12 @@
+=== Agent Install Log ===
+=== Agent Compile Log ===
+=== Agent Error Log ===
+Traceback (most recent call last):
+  File "main.py", line 32, in <module>
+    actions = agent(observation, None)
+  File "C:\Users\msawtell\Documents\Kaggle Competitions\LuxAI\testAgent\agent.py", line 256, in agent
+    best_city,closest_city = getBestCityTile(cityTiles,unit,width,height,resource_tiles)
+  File "C:\Users\msawtell\Documents\Kaggle Competitions\LuxAI\testAgent\agent.py", line 157, in getBestCityTile
+    actions.append(annotate.sidetext("Best City Pos:"+ str(best_city.pos.x) + str(best_city.pos.y)))
+NameError: name 'actions' is not defined
+Agent timed out

@@ -1,0 +1,10 @@
+=== Agent Install Log ===
+=== Agent Compile Log ===
+=== Agent Error Log ===
+Traceback (most recent call last):
+  File "main.py", line 32, in <module>
+    actions = agent(observation, None)
+  File "C:\Users\msawtell\Documents\Kaggle Competitions\LuxAI\testAgent\agent.py", line 257, in agent
+    if cities_in_need[nearestCity.cityid] >= nearestCity.distance_to(unit.pos) and (cities_in_need[nearestCity.cityid] - turns_until_night) < 10: 
+KeyError: 'c_2'
+Agent timed out

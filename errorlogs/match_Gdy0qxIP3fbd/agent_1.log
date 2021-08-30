@@ -1,0 +1,10 @@
+=== Agent Install Log ===
+=== Agent Compile Log ===
+=== Agent Error Log ===
+Traceback (most recent call last):
+  File "main.py", line 32, in <module>
+    actions = agent(observation, None)
+  File "C:\Users\msawtell\Documents\Kaggle Competitions\LuxAI\testAgent\agent.py", line 273, in agent
+    actions.append(unit.move(direction_to(closest_city_tile)))
+NameError: name 'direction_to' is not defined
+Agent timed out

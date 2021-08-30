@@ -1,0 +1,12 @@
+=== Agent Install Log ===
+=== Agent Compile Log ===
+=== Agent Error Log ===
+Traceback (most recent call last):
+  File "main.py", line 32, in <module>
+    actions = agent(observation, None)
+  File "C:\Users\msawtell\Documents\Kaggle Competitions\LuxAI\testAgent\agent.py", line 268, in agent
+    nearestCity = getNearestCityInNeed(cityTiles,unit)
+  File "C:\Users\msawtell\Documents\Kaggle Competitions\LuxAI\testAgent\agent.py", line 176, in getNearestCityInNeed
+    for city in cities_in_need.keys():
+AttributeError: 'list' object has no attribute 'keys'
+Agent timed out

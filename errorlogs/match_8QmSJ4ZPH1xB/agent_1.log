@@ -1,0 +1,12 @@
+=== Agent Install Log ===
+=== Agent Compile Log ===
+=== Agent Error Log ===
+Traceback (most recent call last):
+  File "main.py", line 32, in <module>
+    actions = agent(observation, None)
+  File "C:\Users\msawtell\Documents\Kaggle Competitions\LuxAI\testAgent\agent.py", line 244, in agent
+    bestFTile,bestRTile = getBestResourceTile(resource_tiles,unit,player.researched_coal(),player.researched_uranium())
+  File "C:\Users\msawtell\Documents\Kaggle Competitions\LuxAI\testAgent\agent.py", line 107, in getBestResourceTile
+    if (20/dist)>bestFValue:
+ZeroDivisionError: division by zero
+Agent timed out

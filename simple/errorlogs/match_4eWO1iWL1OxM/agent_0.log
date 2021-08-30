@@ -1,0 +1,8 @@
+=== Agent Install Log ===
+=== Agent Compile Log ===
+=== Agent Error Log ===
+  File "agent.py", line 142
+    numAdjacent+=1 if pos.is_adjacent(city.pos)
+                                              ^
+SyntaxError: invalid syntax
+Agent timed out

@@ -1,0 +1,12 @@
+=== Agent Install Log ===
+=== Agent Compile Log ===
+=== Agent Error Log ===
+Traceback (most recent call last):
+  File "main.py", line 32, in <module>
+    actions = agent(observation, None)
+  File "C:\Users\msawtell\Documents\Kaggle Competitions\LuxAI\testAgent\agent.py", line 274, in agent
+    nearestCity = getNearestCityInNeed(cities_in_need,unit,player)
+  File "C:\Users\msawtell\Documents\Kaggle Competitions\LuxAI\testAgent\agent.py", line 178, in getNearestCityInNeed
+    if city.cityid in cities_in_need:
+AttributeError: 'str' object has no attribute 'cityid'
+Agent timed out

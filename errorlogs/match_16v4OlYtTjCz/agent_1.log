@@ -1,0 +1,10 @@
+=== Agent Install Log ===
+=== Agent Compile Log ===
+=== Agent Error Log ===
+Traceback (most recent call last):
+  File "main.py", line 32, in <module>
+    actions = agent(observation, None)
+  File "C:\Users\msawtell\Documents\Kaggle Competitions\LuxAI\testAgent\agent.py", line 269, in agent
+    if cities_in_need[nearestCity] >= nearestCity.distance_to(unit.pos) and (cities_in_need[nearestCity] - turns_until_night) < 10: 
+KeyError: <lux.game_objects.CityTile object at 0x00000012F4D9C610>
+Agent timed out
