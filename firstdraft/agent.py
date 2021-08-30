@@ -50,10 +50,75 @@ def agent(observation, configuration):
             cell = game_state.map.get_cell(x, y)
             if cell.resource != None:
             	resource_tiles[x][y] = (cell.resource.type,cell.resource.amount)
+            
             if cell.city_tile != None:
                 city_tiles[x][y] = (cell.citytile.fuel,cell.citytile.get_light_upkeep())
-
-
+                resource_fuel_value[x][y] = 0
+                resource_amount_value[x][y] = 0
+                continue
+            
+            if cell.has_resource():
+                if (cell.resource.type == Constants.RESOURCE_TYPES.COAL) and player.researched_coal():
+                    ###CELL IS COAL
+                    resource_amount_value[x][y] = 5
+                    resource_fuel_value[x][y] = 50
+                elif (cell.resource.type == Constants.RESOURCE_TYPES.URANIUM) and player.researched_uraniam():
+                    ###CELL IS URANIUM
+                    resource_amount_value[x][y] = 2
+                    resource_fuel_value[x][y] = 80
+                else:
+                    ###CELL IS WOOD
+                    resource_amount_value[x][y] = 20
+                    resource_fuel_value[x][y] = 20
+            if (x-1) >= 0:
+                temp_cell = game_state.map.get_cell(x-1,y)
+                if temp_cell.has_resource():
+                    if (temp_cell.resource.type == Constants.RESOURCE_TYPES.COAL) and player.researched_coal():
+                        resource_amount_value[x][y] += 5
+                        resource_fuel_value[x][y] += 50
+                    elif (temp_cell.resource.type == Constants.RESOURCE_TYPES.URANIUM) and player.researched_uraniam():
+                        resource_amount_value[x][y] += 2
+                        resource_fuel_value[x][y] += 80
+                    else:
+                        resource_amount_value[x][y] += 20
+                        resource_fuel_value[x][y] += 20
+            if (x+1) < width:
+                temp_cell = game_state.map.get_cell(x+1,y)
+                if temp_cell.has_resource():
+                    if (temp_cell.resource.type == Constants.RESOURCE_TYPES.COAL) and player.researched_coal():
+                        resource_amount_value[x][y] += 5
+                        resource_fuel_value[x][y] += 50
+                    elif (temp_cell.resource.type == Constants.RESOURCE_TYPES.URANIUM) and player.researched_uraniam():
+                        resource_amount_value[x][y] += 2
+                        resource_fuel_value[x][y] += 80
+                    else:
+                        resource_amount_value[x][y] += 20
+                        resource_fuel_value[x][y] += 20
+            if (y-1) >= 0:
+                temp_cell = game_state.map.get_cell(x,y-1)
+                if temp_cell.has_resource():
+                    if (temp_cell.resource.type == Constants.RESOURCE_TYPES.COAL) and player.researched_coal():
+                        resource_amount_value[x][y] += 5
+                        resource_fuel_value[x][y] += 50
+                    elif (temp_cell.resource.type == Constants.RESOURCE_TYPES.URANIUM) and player.researched_uraniam():
+                        resource_amount_value[x][y] += 2
+                        resource_fuel_value[x][y] += 80
+                    else:
+                        resource_amount_value[x][y] += 20
+                        resource_fuel_value[x][y] += 20
+            if (y+1) < height:
+                temp_cell = game_state.map.get_cell(x,y+1)
+                if temp_cell.has_resource():
+                    if (temp_cell.resource.type == Constants.RESOURCE_TYPES.COAL) and player.researched_coal():
+                        resource_amount_value[x][y] += 5
+                        resource_fuel_value[x][y] += 50
+                    elif (temp_cell.resource.type == Constants.RESOURCE_TYPES.URANIUM) and player.researched_uraniam():
+                        resource_amount_value[x][y] += 2
+                        resource_fuel_value[x][y] += 80
+                    else:
+                        resource_amount_value[x][y] += 20
+                        resource_fuel_value[x][y] += 20
+                    
             
 
     # we iterate over all our units and do something with them
