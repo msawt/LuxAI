@@ -55,11 +55,6 @@ USEFUL VALUES:
         - Wood is more efficient for building cities than uranium or coal. However, it's difficult to 
 
 """
-"""
-
-BASIC GARBAGE AI:
-
-"""
 
 def getBestResourceTile(resource_tiles,worker,destinations,researched_coal,researched_uranium): #Gets the resource tile with the highest FUEL/TURN and the highest NUM RESOURCE/TURN based on research level
 
@@ -239,9 +234,6 @@ def agent(observation, configuration):
     for city in player.cities.values():
         cityTiles += city.citytiles
     numCityTiles = len(cityTiles)
-
-    ##################### RECORD ALL DESTINATIONS OF WORKERS
-    destinations = {} #pos: 
 
 
 ########################################################################################## GETS ALL CITIES WHO WILL NOT LAST UNTIL END OF GAME
