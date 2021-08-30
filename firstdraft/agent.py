@@ -51,7 +51,7 @@ def agent(observation, configuration):
             if cell.resource != None:
             	resource_tiles[x][y] = (cell.resource.type,cell.resource.amount)
             if cell.city_tile != None:
-
+                city_tiles[x][y] = (cell.citytile.fuel,cell.citytile.get_light_upkeep())
 
 
             
