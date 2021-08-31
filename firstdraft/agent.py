@@ -3,14 +3,14 @@ import math, sys
 if __package__ == "":
     # for kaggle-environments
     from lux.game import Game
-    from lux.game_map import Cell, RESOURCE_TYPES
+    from lux.game_map import Position, Cell, RESOURCE_TYPES
     from lux.constants import Constants
     from lux.game_constants import GAME_CONSTANTS
     from lux import annotate
 else:
     # for CLI tool
     from .lux.game import Game
-    from .lux.game_map import Cell, RESOURCE_TYPES
+    from .lux.game_map import Position, Cell, RESOURCE_TYPES
     from .lux.constants import Constants
     from .lux.game_constants import GAME_CONSTANTS
     from .lux import annotate
@@ -171,8 +171,7 @@ def agent(observation, configuration):
             for y in range(height):
                 for x in range(width):
                     #Calculate reward
-                    try:
-                        reward = (unit.get_cargo_capacity()*(resource_amount_value[x][y] + resource_fuel_value[x][y]) - 10*city_tiles[x][y]) / (unit.pos.distance_to(Position(x,y))+1)
+                    reward = (unit.get_cargo_capacity()*(resource_amount_value[x][y] + resource_fuel_value[x][y]) - 10*city_tiles[x][y]) / (unit.pos.distance_to(Position(x,y))+1)
                     dist = unit.pos.distance_to(Position(x,y))
                     if reward > max_reward:
                         max_reward = reward
