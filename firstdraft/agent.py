@@ -171,7 +171,8 @@ def agent(observation, configuration):
         	for y in range(height):
         		for x in range(width):
         			#Calculate reward
-        			reward = 0 #Placeholder
+        			try:
+        				reward = (unit.get_cargo_capacity()*(resource_amount_value[x][y] + resource_fuel_value[x][y]) - 10*city_tiles[x][y]) / (unit.pos.distance_to(Position(x,y))+1)
         			dist = unit.pos.distance_to(Position(x,y))
         			if reward > max_reward:
         				max_reward = reward
