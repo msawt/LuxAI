@@ -209,9 +209,14 @@ def agent(observation, configuration):
 
                 else:
                     actions.append(unit.move(unit.pos.direction_to(Position(max_coord[0],max_coord[1]))))
-                
 
-        #else:
+    for city in cityTiles:
+        if city.can_act():
+            #If you can create a worker, create one. Otherwise, research.
+            if numWorkers < numCityTiles:
+                actions.append(city.build_worker())
+            else:
+                actions.append(city.research())
 
 
 
