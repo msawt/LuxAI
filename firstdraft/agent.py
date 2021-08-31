@@ -77,8 +77,19 @@ def agent(observation, configuration):
             	city = player.cities[cell.city_tile.cityid]
             	#Get number of turns of night that city has left before it dies
             	turnsLeft = city.fuel//city.get_light_upkeep()
-            	city_tiles[x][y] = turnsLeft  
-                city_tiles[x][y] = (cell.citytile.fuel,cell.citytile.get_light_upkeep())
+            	city_tiles[x][y] = turnsLeft
+
+            	### Put turnsLeft on tiles adjacent to all cities (for calculating tile rewards)
+            	if (x-1) >= 0:
+            		city_tiles[x-1][y] = turnsLeft
+            	elif (x+1) < width:
+            		city_tiles[x+1][y] = turnsLeft
+            	if (y-1) >= 0:
+            		city_tiles[x][y-1] = turnsLeft
+            	elif (y+1) < height:
+            		city_tiles[x][y+1] = turnsLeft
+            	###
+
                 resource_fuel_value[x][y] = 0
                 resource_amount_value[x][y] = 0
                 continue
@@ -179,16 +190,18 @@ def agent(observation, configuration):
         			#Get location of all citytiles
         			adjacentCities = [c for c in cityTiles if unit.pos.is_adjacent(c.pos)]
         			cell = game_state.map.get_cell(x, y)
-        			if (city_tiles[max_coord[0]][max_coord[1]] >= 10 or len(adjacentCities)==0) and unit.can_build() and cell.city_tile==None:
+
+
+        			if (city_tiles[max_coord[0]][max_coord[1]] >= 10 or len(adjacentCities)==0) and unit.can_build() and cell.city_tile==None: #Only build a city if all adjacent cities will survive for at least 10 turns
         				actions.append(unit.build_city())
-        			elif len(adjacentCities) > 0:
+        			elif len(adjacentCities) > 0:																								#If they can't survive another 10 turns, transfer instead
         				if unit.cargo.uranium > 0:
         				    actions.append(unit.transfer(adjacentCities[0].cityid,Constants.RESOURCE_TYPES.URANIUM,unit.cargo.uranium))
         				elif unit.cargo.coal > 0:
         				    actions.append(unit.transfer(adjacentCities[0].cityid,Constants.RESOURCE_TYPES.COAL,unit.cargo.coal))
         				else:
         				    actions.append(unit.transfer(adjacentCities[0].cityid,Constants.RESOURCE_TYPES.WOOD,unit.cargo.wood))
-        			else:
+        			else:																														#If you can't build or transfer, do nothing
         				actions.append(unit.move(unit.pos.direction_to(Position(max_coord[0],max_coord[1]))))
 
 
