@@ -73,11 +73,15 @@ def agent(observation, configuration):
             	resource_tiles[x][y] = (cell.resource.type,cell.resource.amount)
             
             if cell.city_tile != None:
+<<<<<<< HEAD
             	#Find city associated with CityTile
             	city = player.cities[cell.city_tile.cityid]
             	#Get number of turns of night that city has left before it dies
             	turnsLeft = city.fuel//city.get_light_upkeep()
             	city_tiles[x][y] = turnsLeft  
+
+
+=======
                 city_tiles[x][y] = (cell.citytile.fuel,cell.citytile.get_light_upkeep())
                 resource_fuel_value[x][y] = 0
                 resource_amount_value[x][y] = 0
@@ -144,6 +148,9 @@ def agent(observation, configuration):
                     else:
                         resource_amount_value[x][y] += 20
                         resource_fuel_value[x][y] += 20
+                    
+            
+>>>>>>> 4efb7f559bcdf0738fb45bed5226b04f34d40a09
 
     # we iterate over all our units and do something with them
     for unit in player.units:
