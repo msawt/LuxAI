@@ -77,13 +77,12 @@ def agent(observation, configuration):
                 city = player.cities[cell.citytile.cityid]
                 #Get number of turns of night that city has left before it dies
                 turnsLeft = city.fuel//city.get_light_upkeep()
-                city_tiles[x][y] = turnsLeft
+                city_tiles[x][y] = turnsLeft + turns_until_night
 
                 resource_fuel_value[x][y] = 0
                 resource_amount_value[x][y] = 0
-                continue
             
-            if cell.has_resource():
+            elif cell.has_resource():
                 if (cell.resource.type == Constants.RESOURCE_TYPES.COAL) and player.researched_coal():
                     ###CELL IS COAL
                     resource_amount_value[x][y] = 5
@@ -160,7 +159,12 @@ def agent(observation, configuration):
             for y in range(height):
                 for x in range(width):
                     #Calculate reward
-                    reward = (unit.get_cargo_space_left()*(resource_amount_value[x][y] + resource_fuel_value[x][y]) - 10*city_tiles[x][y]) / (unit.pos.distance_to(Position(x,y))+1)
+                    reward = resource_amount_value[x][y] + resource_fuel_value[x][y]
+                    reward *= unit.get_cargo_space_left()/100
+                    reward -= city_tiles[x][y]
+                    reward /= unit.pos.distance_to(Position(x,y)) + 1
+                    actions.append(annotate.text(x,y,str(reward), 100))
+                    #reward = (unit.get_cargo_space_left()*(resource_amount_value[x][y] + resource_fuel_value[x][y]) - city_tiles[x][y]) / (unit.pos.distance_to(Position(x,y))+1)
                     if not game_state.map.get_cell(x,y).has_resource() and game_state.map.get_cell(x,y).citytile == None:
                         reward += 100
 
@@ -174,6 +178,12 @@ def agent(observation, configuration):
                         max_reward = reward
                         max_coord = (x,y)
                         minDist = dist
+            actions.append(annotate.sidetext(str(unit.get_cargo_space_left())))
+            # actions.append(annotate.x(max_coord[0],max_coord[1]))
+            # actions.append(annotate.sidetext(max_reward))
+            # actions.append(annotate.sidetext("Resource Amount: " + str(resource_amount_value[3][27])))
+            # actions.append(annotate.sidetext("Resource Fuel: " + str(resource_fuel_value[3][27])))
+            # actions.append(annotate.sidetext("Division" + str(unit.pos.distance_to(Position(3,27)) + 1)))
 
 ################################################## TAKE ACTION
             if max_coord != None:
