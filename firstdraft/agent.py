@@ -164,7 +164,6 @@ def agent(observation, configuration):
                     reward -= city_tiles[x][y]
                     reward /= unit.pos.distance_to(Position(x,y)) + 1
                     actions.append(annotate.text(x,y,str(reward), 100))
-                    #reward = (unit.get_cargo_space_left()*(resource_amount_value[x][y] + resource_fuel_value[x][y]) - city_tiles[x][y]) / (unit.pos.distance_to(Position(x,y))+1)
                     if not game_state.map.get_cell(x,y).has_resource() and game_state.map.get_cell(x,y).citytile == None:
                         reward += 100
 
