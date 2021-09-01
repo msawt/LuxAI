@@ -41,7 +41,6 @@ def agent(observation, configuration):
     resource_tiles = [[[0]*height]*width][0] #Size: width, height; Value: (Type, Amount)
     resource_fuel_value = [[[0]*height]*width][0] #Shows the total fuel value per turn harvested by a worker standing here
     resource_amount_value = [[[0]*height]*width][0] #Shows the total number of resources per turn harvested by a worker standing here
-
     unit_destinations = [[[[False, False]]*height]*width][0] #Size: width, height; Value: Boolean (1-turn, Path)
     city_tiles = [[[0]*height]*width][0] #Size: width, height; Value: Night Turns Until Death
 
@@ -161,11 +160,13 @@ def agent(observation, configuration):
                     #Calculate reward
                     reward = resource_amount_value[x][y] + resource_fuel_value[x][y]
                     reward *= unit.get_cargo_space_left()/100
-                    reward -= city_tiles[x][y]
+                    reward -= 10*city_tiles[x][y]
                     reward /= unit.pos.distance_to(Position(x,y)) + 1
-                    actions.append(annotate.text(x,y,str(reward), 100))
                     if not game_state.map.get_cell(x,y).has_resource() and game_state.map.get_cell(x,y).citytile == None:
                         reward += 100
+
+                    if unit_destinations[x][y] == True: #If a worker is pathing to a tile, then any other workers should not path there
+                    	reward = -1*math.inf
 
                     dist = unit.pos.distance_to(Position(x,y))
                     if reward > max_reward:
@@ -177,12 +178,13 @@ def agent(observation, configuration):
                         max_reward = reward
                         max_coord = (x,y)
                         minDist = dist
-            actions.append(annotate.sidetext(str(unit.get_cargo_space_left())))
-            # actions.append(annotate.x(max_coord[0],max_coord[1]))
-            # actions.append(annotate.sidetext(max_reward))
-            # actions.append(annotate.sidetext("Resource Amount: " + str(resource_amount_value[3][27])))
-            # actions.append(annotate.sidetext("Resource Fuel: " + str(resource_fuel_value[3][27])))
-            # actions.append(annotate.sidetext("Division" + str(unit.pos.distance_to(Position(3,27)) + 1)))
+
+            actions.append(annotate.sidetext("Cargo Space Left: " + str(unit.get_cargo_space_left())))
+            actions.append(annotate.x(max_coord[0],max_coord[1]))
+            actions.append(annotate.sidetext("Highest Reward: " + str(max_reward)))
+            actions.append(annotate.sidetext("Resource Amount: " + str(resource_amount_value[3][27])))
+            actions.append(annotate.sidetext("Resource Fuel: " + str(resource_fuel_value[3][27])))
+            #actions.append(annotate.sidetext("Division" + str(unit.pos.distance_to(Position(3,27)) + 1)))
 
 ################################################## TAKE ACTION
             if max_coord != None:
@@ -230,7 +232,7 @@ def agent(observation, configuration):
                 			blocked = False
 
                 	if not blocked:
-                		actions.append(unit.move(unit.pos.direction_to(Position(x,y))))
+                		actions.append(unit.move(direction))
                 	else:
                 		unit_destinations[x][y][0] = True
                 		actions.append(unit.move(DIRECTIONS.CENTER))
