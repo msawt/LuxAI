@@ -179,11 +179,11 @@ def agent(observation, configuration):
                         max_coord = (x,y)
                         minDist = dist
 
-            actions.append(annotate.sidetext("Cargo Space Left: " + str(unit.get_cargo_space_left())))
-            actions.append(annotate.x(max_coord[0],max_coord[1]))
-            actions.append(annotate.sidetext("Highest Reward: " + str(max_reward)))
-            actions.append(annotate.sidetext("Resource Amount: " + str(resource_amount_value[3][27])))
-            actions.append(annotate.sidetext("Resource Fuel: " + str(resource_fuel_value[3][27])))
+            #actions.append(annotate.sidetext("Cargo Space Left: " + str(unit.get_cargo_space_left())))
+            #actions.append(annotate.x(max_coord[0],max_coord[1]))
+            #actions.append(annotate.sidetext("Highest Reward: " + str(max_reward)))
+            #actions.append(annotate.sidetext("Resource Amount: " + str(resource_amount_value[3][27])))
+            #actions.append(annotate.sidetext("Resource Fuel: " + str(resource_fuel_value[3][27])))
             #actions.append(annotate.sidetext("Division" + str(unit.pos.distance_to(Position(3,27)) + 1)))
 
 ################################################## TAKE ACTION
