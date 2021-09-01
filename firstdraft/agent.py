@@ -168,12 +168,12 @@ def agent(observation, configuration):
                         reward += 100
 
                     dist = unit.pos.distance_to(Position(x,y))
-                    if reward > max_reward and unit_destinations[x][y][1] == False:
+                    if reward > max_reward:
                         max_reward = reward
                         max_coord = (x,y)
                         minDist = dist
 
-                    elif reward == max_reward and dist < minDist and unit_destinations[x][y][1] == False: #If the rewards are the same, prioritize the one that is closer to the unit
+                    elif reward == max_reward and dist < minDist: #If the rewards are the same, prioritize the one that is closer to the unit
                         max_reward = reward
                         max_coord = (x,y)
                         minDist = dist
@@ -187,7 +187,7 @@ def agent(observation, configuration):
 ################################################## TAKE ACTION
             if max_coord != None:
                 unit_destinations[max_coord[0]][max_coord[1]][1] = True #Update the matrix to show that a unit is pathing to a tile
-                if unit.pos.distance_to(Position(max_coord[0],max_coord[1])) == 0:																#If you're at the right cell...
+                if unit.pos.distance_to(Position(max_coord[0],max_coord[1])) == 0:																#If you're at the right cell, take the most appropriate action
                     cell = game_state.map.get_cell(max_coord[0],max_coord[1])
 
 
