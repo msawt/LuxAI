@@ -1,0 +1,10 @@
+=== Agent Install Log ===
+=== Agent Compile Log ===
+=== Agent Error Log ===
+Traceback (most recent call last):
+  File "main.py", line 32, in <module>
+    actions = agent(observation, None)
+  File "C:\Users\msawtell\Documents\Kaggle Competitions\LuxAI\firstdraft\agent.py", line 177, in agent
+    unit_destinations[max_coord[0]][max_coord[1]][1] = True #Update the matrix to show that a unit is pathing to a tile
+TypeError: 'NoneType' object is not subscriptable
+Agent timed out

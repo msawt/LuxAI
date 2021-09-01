@@ -252,6 +252,7 @@ def agent(observation, configuration):
 
 ##########################################################################################
     # we iterate over all our units and do something with them
+    destinations = {}
     for unit in player.units:
 
         ################################################ WORKER

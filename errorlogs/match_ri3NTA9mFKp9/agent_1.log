@@ -1,0 +1,10 @@
+=== Agent Install Log ===
+=== Agent Compile Log ===
+=== Agent Error Log ===
+Traceback (most recent call last):
+  File "main.py", line 32, in <module>
+    actions = agent(observation, None)
+  File "C:\Users\msawtell\Documents\Kaggle Competitions\LuxAI\testAgent\agent.py", line 264, in agent
+    bestFTile,bestRTile = getBestResourceTile(resource_tiles,unit,destinations,player.researched_coal(),player.researched_uranium())
+NameError: name 'destinations' is not defined
+Agent timed out

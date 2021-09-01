@@ -79,17 +79,6 @@ def agent(observation, configuration):
                 turnsLeft = city.fuel//city.get_light_upkeep()
                 city_tiles[x][y] = turnsLeft
 
-                # ### Put turnsLeft on tiles adjacent to all cities (for calculating tile rewards)
-                # if (x-1) >= 0:
-                #     city_tiles[x-1][y] = turnsLeft
-                # elif (x+1) < width:
-                #     city_tiles[x+1][y] = turnsLeft
-                # if (y-1) >= 0:
-                #     city_tiles[x][y-1] = turnsLeft
-                # elif (y+1) < height:
-                #     city_tiles[x][y+1] = turnsLeft
-                # ###
-
                 resource_fuel_value[x][y] = 0
                 resource_amount_value[x][y] = 0
                 continue
@@ -174,28 +163,28 @@ def agent(observation, configuration):
                     reward = (unit.get_cargo_space_left()*(resource_amount_value[x][y] + resource_fuel_value[x][y]) - 10*city_tiles[x][y]) / (unit.pos.distance_to(Position(x,y))+1)
                     if not game_state.map.get_cell(x,y).has_resource() and game_state.map.get_cell(x,y).citytile == None:
                         reward += 100
+
                     dist = unit.pos.distance_to(Position(x,y))
-                    if reward > max_reward:
+                    if reward > max_reward and unit_destinations[x][y][1] == False:
                         max_reward = reward
                         max_coord = (x,y)
                         minDist = dist
 
-                    elif reward == max_reward and dist < minDist: #If the rewards are the same, prioritize the one that is closer to the unit
+                    elif reward == max_reward and dist < minDist and unit_destinations[x][y][1] == False: #If the rewards are the same, prioritize the one that is closer to the unit
                         max_reward = reward
                         max_coord = (x,y)
                         minDist = dist
-
 
 ################################################## TAKE ACTION
             if max_coord != None:
-                if unit.pos.distance_to(Position(max_coord[0],max_coord[1])) == 0: #If you're at the right cell...
-                    #Get location of all citytiles
-                    #adjacentCities = [c for c in cityTiles if unit.pos.is_adjacent(c.pos)]
-                    cell = game_state.map.get_cell(x, y)
+                unit_destinations[max_coord[0]][max_coord[1]][1] = True #Update the matrix to show that a unit is pathing to a tile
+                if unit.pos.distance_to(Position(max_coord[0],max_coord[1])) == 0:																#If you're at the right cell...
+                    cell = game_state.map.get_cell(max_coord[0],max_coord[1])
 
 
-                    if unit.can_build(game_state.map) and cell.citytile==None: #Only build a city if all adjacent cities will survive for at least 10 turns
+                    if unit.can_build(game_state.map) and cell.citytile==None:
                         actions.append(unit.build_city())
+
                     elif city_tiles[max_coord[0]][max_coord[1]] < 10 and city_tiles[max_coord[0]][max_coord[1]] > 0 and cell.citytile != None:                                                                                                 #If they can't survive another 10 turns, transfer instead
                         if unit.cargo.uranium > 0:
                             actions.append(unit.transfer(cell.citytile.cityid,Constants.RESOURCE_TYPES.URANIUM,unit.cargo.uranium))
@@ -203,12 +192,39 @@ def agent(observation, configuration):
                             actions.append(unit.transfer(cell.citytile.cityid,Constants.RESOURCE_TYPES.COAL,unit.cargo.coal))
                         else:
                             actions.append(unit.transfer(cell.citytile.cityid,Constants.RESOURCE_TYPES.WOOD,unit.cargo.wood))
+
                     else:                                                                                                                        #If you can't build or transfer, do nothing
                         actions.append(unit.move(unit.pos.direction_to(Position(max_coord[0],max_coord[1]))))
 
 
-                else:
-                    actions.append(unit.move(unit.pos.direction_to(Position(max_coord[0],max_coord[1]))))
+                else:																															#If not, move towards the cell with highest reward
+                	direction = unit.pos.direction_to(Position(max_coord[0],max_coord[1]))
+
+                	#NORTH = TOWARDS Y0; SOUTH = TOWARDS Ymax; EAST = TOWARDS Xmax; WEST = TOWARDS X0
+                	x,y = max_coord[0],max_coord[1]
+                	blocked = True
+                	if direction == DIRECTIONS.NORTH:
+                		if unit_destinations[x][y-1][0]== False: #If there isnt' already a unit pathing to that tile, update the destinations list and move there
+                			unit_destinations[x][y-1][0] = True
+                			blocked = False
+                	if direction == DIRECTIONS.SOUTH:
+                		if unit_destinations[x][y+1][0]== False: #If there isnt' already a unit pathing to that tile, update the destinations list and move there
+                			unit_destinations[x][y+1][0] = True
+                			blocked = False
+                	if direction == DIRECTIONS.EAST:
+                		if unit_destinations[x+1][y][0]== False: #If there isnt' already a unit pathing to that tile, update the destinations list and move there
+                			unit_destinations[x+1][y][0] = True
+                			blocked = False
+                	if direction == DIRECTIONS.WEST:
+                		if unit_destinations[x-1][y][0]== False: #If there isnt' already a unit pathing to that tile, update the destinations list and move there
+                			unit_destinations[x-1][y][0] = True
+                			blocked = False
+
+                	if not blocked:
+                		actions.append(unit.move(unit.pos.direction_to(Position(x,y))))
+                	else:
+                		unit_destinations[x][y][0] = True
+                		actions.append(unit.move(DIRECTIONS.CENTER))
 
     for city in cityTiles:
         if city.can_act():
