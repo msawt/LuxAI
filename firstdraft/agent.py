@@ -43,7 +43,6 @@ def agent(observation, configuration):
     unit_destinations = [[[[False, False]]*height]*width][0] #Size: width, height; Value: Boolean (1-turn, Path)
     city_tiles = [[[0]*height]*width][0] #Size: width, height; Value: Night Turns Until Death
 
-
     ##################### DATA ABOUT TURN/NIGHT
     turn_in_phase = (game_state.turn % 40)+1 #turn on a cycle from 1-40
     if turn_in_phase > 29:
@@ -66,7 +65,7 @@ def agent(observation, configuration):
 
     for y in range(height):
         for x in range(width):
-            cell = game_state.map.get_cell(x, y)
+            cell = game_state.map.get_cell(x,y) #MIGHT BE y,x??????????
            
             if cell.citytile != None and cell.citytile.cityid in player.cities:
                 #Find city associated with CityTile
@@ -87,10 +86,12 @@ def agent(observation, configuration):
                     ###CELL IS URANIUM
                     resource_amount_value[x][y] = 2
                     resource_fuel_value[x][y] = 80
-                else:
+                elif cell.resource.type == Constants.RESOURCE_TYPES.WOOD:
                     ###CELL IS WOOD
                     resource_amount_value[x][y] = 20
                     resource_fuel_value[x][y] = 20
+
+            """
             if (x-1) >= 0:
                 temp_cell = game_state.map.get_cell(x-1,y)
                 if temp_cell.has_resource():
@@ -103,6 +104,21 @@ def agent(observation, configuration):
                     else:
                         resource_amount_value[x][y] += 20
                         resource_fuel_value[x][y] += 20
+            if (y+1) < height:
+                temp_cell = game_state.map.get_cell(x,y+1)
+                if temp_cell.has_resource():
+                    if (temp_cell.resource.type == Constants.RESOURCE_TYPES.COAL) and player.researched_coal():
+                        resource_amount_value[x][y] += 5
+                        resource_fuel_value[x][y] += 50
+                    elif (temp_cell.resource.type == Constants.RESOURCE_TYPES.URANIUM) and player.researched_uranium():
+                        resource_amount_value[x][y] += 2
+                        resource_fuel_value[x][y] += 80
+                    else:
+                        resource_amount_value[x][y] += 20
+                        resource_fuel_value[x][y] += 20
+            
+            """
+            """
             if (x+1) < width:
                 temp_cell = game_state.map.get_cell(x+1,y)
                 if temp_cell.has_resource():
@@ -127,18 +143,8 @@ def agent(observation, configuration):
                     else:
                         resource_amount_value[x][y] += 20
                         resource_fuel_value[x][y] += 20
-            if (y+1) < height:
-                temp_cell = game_state.map.get_cell(x,y+1)
-                if temp_cell.has_resource():
-                    if (temp_cell.resource.type == Constants.RESOURCE_TYPES.COAL) and player.researched_coal():
-                        resource_amount_value[x][y] += 5
-                        resource_fuel_value[x][y] += 50
-                    elif (temp_cell.resource.type == Constants.RESOURCE_TYPES.URANIUM) and player.researched_uranium():
-                        resource_amount_value[x][y] += 2
-                        resource_fuel_value[x][y] += 80
-                    else:
-                        resource_amount_value[x][y] += 20
-                        resource_fuel_value[x][y] += 20
+            """
+            
 
     # we iterate over all our units and do something with them
     for unit in player.units:
@@ -156,11 +162,14 @@ def agent(observation, configuration):
                 for x in range(width):
                     #Calculate reward
                     reward = resource_amount_value[x][y] + resource_fuel_value[x][y]
-                    reward *= unit.get_cargo_space_left()/100
-                    reward -= (100-unit.get_cargo_space_left())*city_tiles[x][y]
-                    reward /= unit.pos.distance_to(Position(x,y)) + 1
+                    reward = reward * unit.get_cargo_space_left()/100
+                    reward = reward - (10*city_tiles[x][y])
+
+                    if unit.pos.distance_to(Position(x,y)) > 5:
+                    	reward = reward / unit.pos.distance_to(Position(x,y))
+
                     if (not game_state.map.get_cell(x,y).has_resource()) and game_state.map.get_cell(x,y).citytile == None and unit.get_cargo_space_left()==0 and any([city.pos.is_adjacent(Position(x,y)) for city in cityTiles]):
-                        reward = -100
+                        reward = 100
 
                     if unit_destinations[x][y] == True: #If a worker is pathing to a tile, then any other workers should not path there
                     	reward = -1*math.inf
@@ -176,15 +185,21 @@ def agent(observation, configuration):
                         max_coord = (x,y)
                         minDist = dist
 
-            #actions.append(annotate.sidetext("Cargo Space Left: " + str(unit.get_cargo_space_left())))
+            actions.append(annotate.sidetext(str(unit.id) + " Cargo Space Left: " + str(unit.get_cargo_space_left())))
             actions.append(annotate.x(max_coord[0],max_coord[1]))
             actions.append(annotate.sidetext("Highest Reward: " + str(max_reward)))
             actions.append(annotate.sidetext("Resource Amount: " + str(resource_amount_value[max_coord[0]][max_coord[1]])))
             actions.append(annotate.sidetext("Resource Fuel: " +str(resource_fuel_value[max_coord[0]][max_coord[1]])))
-            #actions.append(annotate.sidetext("Division" + str(unit.pos.distance_to(Position(3,27)) + 1)))
 
-            for city in cityTiles:
-            	actions.append(annotate.sidetext(city.cityid + " turns left: " + str(city_tiles[city.pos.x][city.pos.y])))
+            # actions.append(annotate.sidetext("Fuel+Amount: " +str(resource_fuel_value[10][1]+resource_fuel_value[10][1])))
+            # actions.append(annotate.sidetext("Has Resources: " +str(game_state.map.get_cell(10, 1).has_resource())))
+            # try:
+            # 	actions.append(annotate.sidetext("Resources Left: " +str(game_state.map.get_cell(10, 1).resource.amount)))
+            # except:
+            # 	actions.append(annotate.sidetext("Resources Left: 0"))
+
+            # for city in cityTiles:
+            # 	actions.append(annotate.sidetext(city.cityid + " turns left: " + str(city_tiles[city.pos.x][city.pos.y])))
 
 ################################################## TAKE ACTION
             if max_coord != None:

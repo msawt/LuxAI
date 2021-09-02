@@ -1,0 +1,10 @@
+=== Agent Install Log ===
+=== Agent Compile Log ===
+=== Agent Error Log ===
+Traceback (most recent call last):
+  File "main.py", line 32, in <module>
+    actions = agent(observation, None)
+  File "C:\Users\msawtell\Documents\Kaggle Competitions\LuxAI\firstdraft\agent.py", line 95, in agent
+    if temp_cell.resource != None and cell.resource.amount > 0:
+AttributeError: 'NoneType' object has no attribute 'amount'
+Agent timed out

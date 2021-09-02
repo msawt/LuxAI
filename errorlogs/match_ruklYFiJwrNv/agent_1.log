@@ -1,0 +1,10 @@
+=== Agent Install Log ===
+=== Agent Compile Log ===
+=== Agent Error Log ===
+Traceback (most recent call last):
+  File "main.py", line 32, in <module>
+    actions = agent(observation, None)
+  File "C:\Users\msawtell\Documents\Kaggle Competitions\LuxAI\firstdraft\agent.py", line 166, in agent
+    reward = reward / unit.pos.distance_to(Position(x,y)) + 1
+ZeroDivisionError: float division by zero
+Agent timed out
