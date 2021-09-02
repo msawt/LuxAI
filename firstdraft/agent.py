@@ -162,8 +162,8 @@ def agent(observation, configuration):
                     reward *= unit.get_cargo_space_left()/100
                     reward -= 10*city_tiles[x][y]
                     reward /= unit.pos.distance_to(Position(x,y)) + 1
-                    if not game_state.map.get_cell(x,y).has_resource() and game_state.map.get_cell(x,y).citytile == None:
-                        reward += 100
+                    if (not game_state.map.get_cell(x,y).has_resource()) and game_state.map.get_cell(x,y).citytile == None and unit.get_cargo_space_left()==0 and any([city.pos.is_adjacent(Position(x,y)) for city in cityTiles]):
+                        reward = -100
 
                     if unit_destinations[x][y] == True: #If a worker is pathing to a tile, then any other workers should not path there
                     	reward = -1*math.inf
@@ -181,9 +181,9 @@ def agent(observation, configuration):
 
             #actions.append(annotate.sidetext("Cargo Space Left: " + str(unit.get_cargo_space_left())))
             #actions.append(annotate.x(max_coord[0],max_coord[1]))
-            #actions.append(annotate.sidetext("Highest Reward: " + str(max_reward)))
-            #actions.append(annotate.sidetext("Resource Amount: " + str(resource_amount_value[3][27])))
-            #actions.append(annotate.sidetext("Resource Fuel: " + str(resource_fuel_value[3][27])))
+            actions.append(annotate.sidetext("Highest Reward: " + str(max_reward)))
+            actions.append(annotate.sidetext("Resource Amount: " + str(resource_amount_value[max_coord[0]][max_coord[1]])))
+            actions.append(annotate.sidetext("Resource Fuel: " +str(resource_fuel_value[max_coord[0]][max_coord[1]])))
             #actions.append(annotate.sidetext("Division" + str(unit.pos.distance_to(Position(3,27)) + 1)))
 
 ################################################## TAKE ACTION
