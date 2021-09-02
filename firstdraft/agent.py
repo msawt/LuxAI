@@ -38,7 +38,6 @@ def agent(observation, configuration):
     opponent = game_state.players[(observation.player + 1) % 2]
     width, height = game_state.map.width, game_state.map.height
 
-    resource_tiles = [[[0]*height]*width][0] #Size: width, height; Value: (Type, Amount)
     resource_fuel_value = [[[0]*height]*width][0] #Shows the total fuel value per turn harvested by a worker standing here
     resource_amount_value = [[[0]*height]*width][0] #Shows the total number of resources per turn harvested by a worker standing here
     unit_destinations = [[[[False, False]]*height]*width][0] #Size: width, height; Value: Boolean (1-turn, Path)
@@ -68,9 +67,7 @@ def agent(observation, configuration):
     for y in range(height):
         for x in range(width):
             cell = game_state.map.get_cell(x, y)
-            if cell.resource != None:
-                resource_tiles[x][y] = (cell.resource.type,cell.resource.amount)
-            
+           
             if cell.citytile != None and cell.citytile.cityid in player.cities:
                 #Find city associated with CityTile
                 city = player.cities[cell.citytile.cityid]
@@ -160,7 +157,7 @@ def agent(observation, configuration):
                     #Calculate reward
                     reward = resource_amount_value[x][y] + resource_fuel_value[x][y]
                     reward *= unit.get_cargo_space_left()/100
-                    reward -= 10*city_tiles[x][y]
+                    reward -= (100-unit.get_cargo_space_left())*city_tiles[x][y]
                     reward /= unit.pos.distance_to(Position(x,y)) + 1
                     if (not game_state.map.get_cell(x,y).has_resource()) and game_state.map.get_cell(x,y).citytile == None and unit.get_cargo_space_left()==0 and any([city.pos.is_adjacent(Position(x,y)) for city in cityTiles]):
                         reward = -100
@@ -180,11 +177,14 @@ def agent(observation, configuration):
                         minDist = dist
 
             #actions.append(annotate.sidetext("Cargo Space Left: " + str(unit.get_cargo_space_left())))
-            #actions.append(annotate.x(max_coord[0],max_coord[1]))
+            actions.append(annotate.x(max_coord[0],max_coord[1]))
             actions.append(annotate.sidetext("Highest Reward: " + str(max_reward)))
             actions.append(annotate.sidetext("Resource Amount: " + str(resource_amount_value[max_coord[0]][max_coord[1]])))
             actions.append(annotate.sidetext("Resource Fuel: " +str(resource_fuel_value[max_coord[0]][max_coord[1]])))
             #actions.append(annotate.sidetext("Division" + str(unit.pos.distance_to(Position(3,27)) + 1)))
+
+            for city in cityTiles:
+            	actions.append(annotate.sidetext(city.cityid + " turns left: " + str(city_tiles[city.pos.x][city.pos.y])))
 
 ################################################## TAKE ACTION
             if max_coord != None:
