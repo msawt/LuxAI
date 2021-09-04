@@ -1,0 +1,10 @@
+=== Agent Install Log ===
+=== Agent Compile Log ===
+=== Agent Error Log ===
+Traceback (most recent call last):
+  File "main.py", line 32, in <module>
+    actions = agent(observation, None)
+  File "C:\Users\msawtell\Documents\Kaggle Competitions\LuxAI\firstdraft\agent.py", line 183, in agent
+    elif reward == max_reward and dist < minDist: #If the rewards are the same, prioritize the one that is closer to the unit
+TypeError: '<' not supported between instances of 'int' and 'NoneType'
+Agent timed out

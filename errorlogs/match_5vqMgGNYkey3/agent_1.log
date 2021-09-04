@@ -1,0 +1,11 @@
+=== Agent Install Log ===
+=== Agent Compile Log ===
+=== Agent Error Log ===
+Traceback (most recent call last):
+  File "main.py", line 3, in <module>
+    from agent import agent
+  File "C:\Users\msawtell\Documents\Kaggle Competitions\LuxAI\firstdraft\agent.py", line 271
+    actions.append(annotate.sidetext("Resources at 17,6" + str(resource_fuel_value[17][6]+resource_amount_value[17][6])))
+                                                                                                                        ^
+IndentationError: unindent does not match any outer indentation level
+Agent timed out

@@ -1,0 +1,11 @@
+=== Agent Install Log ===
+=== Agent Compile Log ===
+=== Agent Error Log ===
+Traceback (most recent call last):
+  File "main.py", line 3, in <module>
+    from agent import agent
+  File "C:\Users\msawtell\Documents\Kaggle Competitions\LuxAI\firstdraft\agent.py", line 148
+    for unit in player.units:
+    ^
+IndentationError: unexpected indent
+Agent timed out
