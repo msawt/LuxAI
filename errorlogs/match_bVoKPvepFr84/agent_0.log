@@ -1,0 +1,12 @@
+=== Agent Install Log ===
+=== Agent Compile Log ===
+=== Agent Error Log ===
+Traceback (most recent call last):
+  File "main.py", line 61, in <module>
+    actions = agent(observation, None)
+  File "C:\Users\msawtell\Documents\Kaggle Competitions\LuxAI\DeepQ\agent.py", line 335, in agent
+    obs = Obs(observation)
+  File "C:\Users\msawtell\Documents\Kaggle Competitions\LuxAI\DeepQ\agent.py", line 86, in __init__
+    pad_size_width = (32 - self.observation[0]["observation"]["width"]) // 2 #Since the NN must have the same input size, boards with a smaller width/height are padded with 0s
+KeyError: 0
+Agent timed out

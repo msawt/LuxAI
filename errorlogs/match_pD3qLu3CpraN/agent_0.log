@@ -1,0 +1,29 @@
+=== Agent Install Log ===
+=== Agent Compile Log ===
+=== Agent Error Log ===
+Traceback (most recent call last):
+  File "C:\Users\msawtell\AppData\Local\Programs\Python\Python38\lib\site-packages\torch\serialization.py", line 308, in _check_seekable
+    f.seek(f.tell())
+AttributeError: 'list' object has no attribute 'seek'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "main.py", line 29, in <module>
+    from agent import *
+  File "C:\Users\msawtell\Documents\Kaggle Competitions\LuxAI\DeepQ\agent.py", line 328, in <module>
+    a = ActorAgent(cin = 11, out_worker=6, out_ctiles=3,worker_path=paths,ctile_path=paths)
+  File "C:\Users\msawtell\Documents\Kaggle Competitions\LuxAI\DeepQ\agent.py", line 294, in __init__
+    self.worker_model.load_state_dict(torch.load(worker_path))
+  File "C:\Users\msawtell\AppData\Local\Programs\Python\Python38\lib\site-packages\torch\serialization.py", line 594, in load
+    with _open_file_like(f, 'rb') as opened_file:
+  File "C:\Users\msawtell\AppData\Local\Programs\Python\Python38\lib\site-packages\torch\serialization.py", line 235, in _open_file_like
+    return _open_buffer_reader(name_or_buffer)
+  File "C:\Users\msawtell\AppData\Local\Programs\Python\Python38\lib\site-packages\torch\serialization.py", line 220, in __init__
+    _check_seekable(buffer)
+  File "C:\Users\msawtell\AppData\Local\Programs\Python\Python38\lib\site-packages\torch\serialization.py", line 311, in _check_seekable
+    raise_err_msg(["seek", "tell"], e)
+  File "C:\Users\msawtell\AppData\Local\Programs\Python\Python38\lib\site-packages\torch\serialization.py", line 304, in raise_err_msg
+    raise type(e)(msg)
+AttributeError: 'list' object has no attribute 'seek'. You can only torch.load from a file that is seekable. Please pre-load the data into a buffer like io.BytesIO and try to load from it instead.
+Agent timed out

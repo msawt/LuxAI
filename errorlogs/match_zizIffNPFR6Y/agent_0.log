@@ -1,0 +1,12 @@
+=== Agent Install Log ===
+=== Agent Compile Log ===
+=== Agent Error Log ===
+Traceback (most recent call last):
+  File "main.py", line 61, in <module>
+    actions = agent(observation, None)
+  File "C:\Users\msawtell\Documents\Kaggle Competitions\LuxAI\DeepQ\agent.py", line 335, in agent
+    obs = Obs(observation)
+  File "C:\Users\msawtell\Documents\Kaggle Competitions\LuxAI\DeepQ\agent.py", line 84, in __init__
+    self.step = self.observation[0]["observation"]["step"] #Turn number (?)
+KeyError: 0
+Agent timed out

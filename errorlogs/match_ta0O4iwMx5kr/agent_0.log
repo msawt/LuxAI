@@ -1,0 +1,10 @@
+=== Agent Install Log ===
+=== Agent Compile Log ===
+=== Agent Error Log ===
+Traceback (most recent call last):
+  File "main.py", line 29, in <module>
+    from agent import *
+  File "C:\Users\msawtell\Documents\Kaggle Competitions\LuxAI\DeepQ\agent.py", line 315, in <module>
+    path1 = os.join(os.getcwd(),"DeepQ/models/worker_model_v29.pt")
+AttributeError: module 'os' has no attribute 'join'
+Agent timed out

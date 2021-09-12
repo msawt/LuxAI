@@ -1,0 +1,12 @@
+=== Agent Install Log ===
+=== Agent Compile Log ===
+=== Agent Error Log ===
+Traceback (most recent call last):
+  File "main.py", line 29, in <module>
+    from agent import *
+  File "C:\Users\msawtell\Documents\Kaggle Competitions\LuxAI\DeepQ\agent.py", line 319, in <module>
+    a = ActorAgent(cin = 11, out_worker=6, out_ctiles=3,worker_path=path1,ctile_path=path2)
+  File "C:\Users\msawtell\Documents\Kaggle Competitions\LuxAI\DeepQ\agent.py", line 297, in __init__
+    self.ctiles_model.eval()
+AttributeError: 'ActorAgent' object has no attribute 'ctiles_model'
+Agent timed out
